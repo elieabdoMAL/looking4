@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "looking4",
-    "slug": "looking4",
+    "slug": "mobileappslabs-looking4",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/square-logo.png",
@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/square-logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mobileappslabs.mobileappslabslooking4"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +37,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "0f41a157-b86d-4dab-9fe6-3c3a3ae0409a"
+      }
+    },
+    "owner": "mobileappslabs"
   }
 }
