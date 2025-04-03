@@ -66,7 +66,7 @@ export default function WelcomePage() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.loginButton}
-            onPress={() => router.push("../testSuccessfulPage")}
+            onPress={() => router.push("./login")}
           >
             <Text style={styles.loginButtonText}>me connectez</Text>
           </TouchableOpacity>
