@@ -73,7 +73,7 @@ export default function WelcomePage() {
 
           <TouchableOpacity
             style={styles.registerButton}
-            onPress={() => router.push("../testSuccessfulPage")}
+            onPress={() => router.push("./signup")}
           >
             <Text style={styles.registerButtonText}>créer un compte</Text>
           </TouchableOpacity>
