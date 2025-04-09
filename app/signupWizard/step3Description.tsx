@@ -1,3 +1,4 @@
+// app/signupWizard/step3Description.tsx
 import React, { useState } from "react";
 import {
   View,
@@ -12,29 +13,22 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import BackButton from "../../src/components/BackButton";
 import colors from "../../src/styles/colors";
 
-const Step1Name: React.FC = () => {
+const Step3Description: React.FC = () => {
   const router = useRouter();
-
-  const params = useLocalSearchParams<{
+  const { userName, images, email, password } = useLocalSearchParams<{
+    userName?: string;
+    images?: string[];
     email?: string;
     password?: string;
-    provider?: string;
-    token?: string;
   }>();
-  console.log("Step1Name - Received params:", params);
 
-  const { email, password } = params;
-  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
+  // Navigate to Step4Keywords, passing along userName, email, images, and description
   const handleNext = () => {
-    if (!name.trim()) {
-      console.log("Name is empty, please fill it in");
-      return;
-    }
-    console.log("Navigating to Step2Images with:", name, email, password);
     router.push({
-      pathname: "../testSuccessfulPage",
-      params: { userName: name, email, password },
+      pathname: "./step4Keywords",
+      params: { userName, email, password, images, description },
     });
   };
 
@@ -52,32 +46,39 @@ const Step1Name: React.FC = () => {
         <Image source={require("../../assets/logo.png")} style={styles.logo} />
       </View>
 
-      {/* Name Input Section */}
-      <View style={styles.viewStyle}>
-        <Text style={styles.headText}>
-          Créez votre identité{"\n"}en 4 étapes simples
+      {/* Content */}
+      <View style={styles.content}>
+        <Text style={styles.title}>Racontez votre{"\n"}histoire Looking 4</Text>
+        <Text style={styles.subtitle}>ÉCRIVEZ UNE DESCRIPTION</Text>
+
+        {/* Multi-line TextInput for the description */}
+        <View style={styles.textAreaContainer}>
+          <TextInput
+            style={styles.textArea}
+            placeholder="Ma description..."
+            placeholderTextColor="#999"
+            multiline
+            value={description}
+            onChangeText={setDescription}
+          />
+        </View>
+
+        {/* Info text */}
+        <Text style={styles.infoText}>
+          Votre description est importante, les gens peuvent faire des
+          recherches en fonction de votre description!
         </Text>
-        <Text style={styles.containerText}>Votre nom Looking4</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Mon nom..."
-          placeholderTextColor="#999"
-          value={name}
-          onChangeText={setName}
-        />
       </View>
 
-      {/* Footer with progress image and next button */}
+      {/* Footer with button + progress image */}
       <View style={styles.footer}>
-        <TouchableOpacity
-          style={styles.createAccountButton}
-          onPress={handleNext}
-        >
-          <Text style={styles.createAccountButtonText}>Suivant</Text>
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+          <Text style={styles.nextButtonText}>Suivant</Text>
         </TouchableOpacity>
+
         <Image
           style={styles.progressImage}
-          source={require("../../assets/Wizard/Progress1.png")}
+          source={require("../../assets/Wizard/Progress3.png")}
         />
       </View>
     </LinearGradient>
@@ -98,45 +99,61 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: "center",
     marginTop: 77,
+    marginBottom: 20,
   },
   logo: {
     width: 184,
     height: 79,
-    marginBottom: 30,
     resizeMode: "contain",
   },
-  viewStyle: {
-    width: "100%",
+  content: {
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 10,
   },
-  headText: {
+  title: {
     fontSize: 26,
     color: colors.white,
+    fontWeight: "600",
     textAlign: "center",
     marginBottom: 30,
-    fontWeight: "600",
-    lineHeight: 34,
   },
-  containerText: {
+  subtitle: {
     fontSize: 14,
     color: colors.black,
     fontWeight: "600",
     textTransform: "uppercase",
     marginBottom: 30,
   },
-  input: {
+  textAreaContainer: {
     width: 357,
-    height: 71,
+    height: 200,
     backgroundColor: colors.white,
     borderRadius: 20,
-    paddingHorizontal: 20,
-    fontSize: 14,
+    marginBottom: 15,
+    // Shadow
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 4,
+    overflow: "hidden", // So text won't overflow the rounded corners
+  },
+  textArea: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    fontSize: 14,
+    color: "#333",
+    textAlignVertical: "top",
+  },
+  infoText: {
+    fontSize: 15,
+    color: colors.white,
+    textAlign: "center",
+    fontStyle: "italic",
+    width: 300,
+    lineHeight: 16,
+    marginBottom: 10,
   },
   footer: {
     position: "absolute",
@@ -146,16 +163,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  progressImage: {
-    width: "100%",
-    height: 20,
-    resizeMode: "contain",
-    marginBottom: 15,
-  },
-  createAccountButton: {
+  nextButton: {
     width: 203,
     height: 62,
-    marginBottom: 40,
+    marginBottom: 30,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -163,18 +174,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#6FB6CF",
     borderColor: "#79CEEC",
     borderWidth: 3,
+    // Shadow
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 4,
   },
-  createAccountButtonText: {
+  nextButtonText: {
     color: colors.white,
     fontSize: 18,
     fontWeight: "600",
     marginRight: 8,
   },
+  progressImage: {
+    width: "100%",
+    height: 20,
+    resizeMode: "contain",
+    marginBottom: 15,
+  },
 });
 
-export default Step1Name;
+export default Step3Description;

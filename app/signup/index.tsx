@@ -29,8 +29,8 @@ const SignUp: React.FC = () => {
       return;
     }
     console.log("Traditional sign up params:", email, password);
-    router.push({
-      pathname: "./signupWizard/step1Name",
+    router.replace({
+      pathname: "/signupWizard/step1Name",
       params: { email, password },
     });
   };
