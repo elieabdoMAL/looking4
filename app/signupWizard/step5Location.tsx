@@ -10,13 +10,16 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import config from "../../src/utils/config";
 import BackButton from "../../src/components/BackButton";
 import colors from "../../src/styles/colors";
 
 const Step5Location: React.FC = () => {
-  // Use Expo Router hooks to receive passed parameters.
   const router = useRouter();
+
+  // Retrieve signup parameters from the previous steps
   const { userName, images, description, keywords, email, password } =
     useLocalSearchParams<{
       userName?: string;
@@ -27,6 +30,7 @@ const Step5Location: React.FC = () => {
       password?: string;
     }>();
 
+  // selectedLocation will be used to let the user choose how to share location
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
 
   const handlePublish = async () => {
@@ -38,6 +42,7 @@ const Step5Location: React.FC = () => {
       return;
     }
 
+    // Build payload to sign up; if your API expects the location, add it here.
     const payload = {
       name: userName,
       description: description,
@@ -55,24 +60,43 @@ const Step5Location: React.FC = () => {
         payload,
         {
           headers: { "Content-Type": "application/json" },
+          timeout: 10000,
         }
       );
-      console.log("Signup Wizard success:", response.data);
+      console.log(
+        "Signup response data:",
+        JSON.stringify(response.data, null, 2)
+      );
+
+      // Check if the API returned an error field
+      if (response.data.error !== undefined) {
+        Alert.alert(
+          "Erreur",
+          "La création du compte a échoué, veuillez réessayer."
+        );
+        return;
+      }
+
+      // Save token and user ID to AsyncStorage
+      if (response.data.token && response.data.user?.id) {
+        await AsyncStorage.setItem("token", response.data.token);
+        await AsyncStorage.setItem("userId", response.data.user.id.toString());
+      }
+
       Alert.alert("Succès", "Compte créé avec succès !", [
         {
           text: "OK",
           onPress: () => {
-            // Navigate to MainPage from the parent navigator.
-            // With Expo Router, you can push using the parent's route; adjust as needed.
-            router.push("../testSuccessfulPage");
+            router.push("/userProfile");
           },
         },
       ]);
     } catch (error: any) {
-      console.error("Signup Wizard error:", error.message);
       Alert.alert(
         "Erreur",
-        "La création du compte a échoué, veuillez réessayer."
+        error.response?.data?.error ||
+          error.message ||
+          "Vérifiez votre connexion internet."
       );
     }
   };
@@ -91,7 +115,7 @@ const Step5Location: React.FC = () => {
         <Image source={require("../../assets/logo.png")} style={styles.logo} />
       </View>
 
-      {/* Main content */}
+      {/* Main Content */}
       <View style={styles.content}>
         <Text style={styles.title}>
           Pour être trouvé {"\n"}
@@ -99,7 +123,6 @@ const Step5Location: React.FC = () => {
         </Text>
         <Text style={styles.subtitle}>PLACEZ-VOUS SUR LA CARTE</Text>
 
-        {/* Location Options */}
         <TouchableOpacity
           style={[
             styles.optionButton,
@@ -140,12 +163,11 @@ const Step5Location: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Footer with Publish button */}
+      {/* Footer with Publish Button */}
       <View style={styles.footer}>
         <TouchableOpacity style={styles.publishButton} onPress={handlePublish}>
           <Text style={styles.publishButtonText}>Publiez</Text>
         </TouchableOpacity>
-
         <Image
           style={styles.progressImage}
           source={require("../../assets/Wizard/Progress5.png")}

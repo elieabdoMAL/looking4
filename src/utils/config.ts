@@ -1,5 +1,8 @@
 export default {
-  BASE_URL: "http://localhost:3000",
+  BASE_URL: "http://192.168.1.103:3000",
+  //choose one of the above or below line,
+  // BASE_URL: "https://looking4-api.mobileappslabs.ca/",
+
   GOOGLE_CLIENT_ID:
     "212499413904-nlk7gp0i6bnlungtq579otmd3lli9nm6.apps.googleusercontent.com",
   GOOGLE_IOS_CLIENT_ID:

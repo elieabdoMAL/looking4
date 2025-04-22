@@ -10,6 +10,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import styles from "./styles";
 import Colors from "../../src/styles/colors";
@@ -18,7 +19,6 @@ import config from "../../src/utils/config";
 
 const Login: React.FC = () => {
   const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -34,11 +34,19 @@ const Login: React.FC = () => {
 
       console.log("Login success:", response.data);
 
+      // Save the token and user id into AsyncStorage
+      if (response.data && response.data.token && response.data.user?.id) {
+        await AsyncStorage.setItem("token", response.data.token);
+        await AsyncStorage.setItem("userId", response.data.user.id.toString());
+      } else {
+        console.error("Missing token or user ID in response", response.data);
+      }
+
       Alert.alert("Login Successful", "You have logged in successfully!", [
         {
           text: "OK",
           onPress: () => {
-            router.push("../testSuccessfulPage");
+            router.push("/userProfile"); // Navigate to profile page (adjust route if needed)
           },
         },
       ]);
