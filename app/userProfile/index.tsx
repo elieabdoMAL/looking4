@@ -1,4 +1,5 @@
-import React, { FC, useState, useEffect } from "react";
+// app/userProfile/index.tsx
+import React, { FC, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -11,68 +12,25 @@ import {
   ImageBackground,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import LinearGradient from "expo-linear-gradient";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import BackButton from "../../src/components/BackButton";
 
 import { styles, popupStyles } from "./styles";
-import config from "../../src/utils/config";
-
-const API_URL = `${config.BASE_URL}/users/getMyProfile`;
 
 const UserProfileScreen: FC = () => {
-  const [userFullName, setUserFullName] = useState<string>("");
+  // Local state with default values
+  const [userFullName, setUserFullName] = useState<string>(
+    "Nom complet de l'utilisateur"
+  );
   const [mainImageUri, setMainImageUri] = useState<string>("");
   const [thumbnails, setThumbnails] = useState<string[]>(new Array(4).fill(""));
-  const [description, setDescription] = useState<string>("");
+  const [description, setDescription] = useState<string>(
+    "Enter you description here..."
+  );
   const [zone, setZone] = useState<string>("");
   const [showLocationPopup, setShowLocationPopup] = useState<boolean>(false);
 
   const router = useRouter();
-
-  // On component mount, fetch profile data from the API.
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const token = await AsyncStorage.getItem("token");
-        const userId = await AsyncStorage.getItem("userId");
-        if (!token || !userId) return;
-
-        const response = await axios.post(
-          API_URL,
-          { checksum: "" },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              userid: userId,
-              authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (response.data && response.data.user) {
-          const profile = response.data.user;
-          setUserFullName(profile.name || "Nom complet de l’utilisateur");
-
-          setMainImageUri(
-            profile.profile_image ||
-              "../../assets/UserProfile/mainImagePlaceholder.png"
-          );
-          setDescription(
-            profile.description || "Enter you description here..."
-          );
-          setZone(profile.zone || "");
-          setThumbnails(profile.thumbnails || new Array(4).fill(""));
-        }
-      } catch (error: any) {
-        console.error("Error fetching profile:", error.message);
-      }
-    };
-
-    fetchProfile();
-  }, []);
 
   // Function to pick a new main image
   const pickMainImage = async () => {
@@ -139,7 +97,7 @@ const UserProfileScreen: FC = () => {
             <Image source={{ uri: mainImageUri }} style={styles.mainImage} />
           ) : (
             <Image
-              source={require("../../assets/UserProfile/mainImagePlaceholder.png")}
+              source={require("../../assets/UserProfile/mainImageIcon.png")}
               style={styles.mainImagePlaceholder}
               resizeMode="stretch"
             />
@@ -163,7 +121,11 @@ const UserProfileScreen: FC = () => {
                 <Image source={{ uri: thumb }} style={styles.thumbnailImage} />
               ) : (
                 <Image
-                  source={require("../../assets/UserProfile/profileImagePlaceholder.png")}
+                  source={
+                    index === 0
+                      ? require("../../assets/UserProfile/profileImagePlaceholder.png")
+                      : require("../../assets/UserProfile/otherImagesPlaceholder.png")
+                  }
                   style={styles.thumbnailPlaceholder}
                   resizeMode="stretch"
                 />
@@ -193,7 +155,6 @@ const UserProfileScreen: FC = () => {
             <Image
               source={require("../../assets/UserProfile/locationButton.png")}
               style={styles.locationIcon}
-              resizeMode="center"
             />
           </TouchableOpacity>
           <TextInput

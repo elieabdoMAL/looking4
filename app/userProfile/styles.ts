@@ -4,6 +4,7 @@ import colors from "../../src/styles/colors";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 10,
     backgroundColor: colors.white,
   },
   scrollContainer: {
@@ -12,7 +13,7 @@ export const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    top: 20,
+    top: 0,
     left: 20,
     zIndex: 999,
   },
@@ -25,7 +26,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: colors.white,
-    paddingVertical: 20,
+    paddingVertical: 0,
     paddingHorizontal: 15,
     borderRadius: 8,
   },
@@ -65,16 +66,15 @@ export const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   mainImagePlaceholder: {
-    width: 80,
-    height: 80,
-    tintColor: colors.black,
+    width: 70,
+    height: 60,
   },
   crownIcon: {
     position: "absolute",
     top: 15,
     left: 15,
-    width: 22,
-    height: 18,
+    width: 40,
+    height: 40,
   },
   thumbnailsRow: {
     flexDirection: "row",
@@ -85,8 +85,7 @@ export const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 60,
-    backgroundColor: "#F0F0F0",
-    overflow: "hidden",
+    backgroundColor: "transparent",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -96,9 +95,8 @@ export const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   thumbnailPlaceholder: {
-    width: 30,
-    height: 30,
-    tintColor: colors.black,
+    width: 60,
+    height: 60,
   },
   descriptionLabel: {
     fontSize: 18,
@@ -111,7 +109,7 @@ export const styles = StyleSheet.create({
     borderColor: colors.black,
     borderWidth: 1,
     borderRadius: 10,
-    minHeight: 100,
+    minHeight: 150,
     padding: 10,
     marginHorizontal: 10,
     marginBottom: 20,
@@ -142,7 +140,6 @@ export const styles = StyleSheet.create({
   locationIcon: {
     width: 46,
     height: 46,
-    tintColor: colors.white,
   },
   locationInput: {
     flex: 1,
@@ -245,5 +242,4 @@ export const popupStyles = StyleSheet.create({
   },
 });
 
-// add a dummy default export so Expo Router won’t try to treat this file as a page
 export default { styles, popupStyles };
