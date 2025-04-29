@@ -1,5 +1,5 @@
 export default {
-  BASE_URL: "http://192.168.1.103:3000",
+  BASE_URL: "http://192.168.0.76:3000",
   //choose one of the above or below line,
   // BASE_URL: "https://looking4-api.mobileappslabs.ca/",
 

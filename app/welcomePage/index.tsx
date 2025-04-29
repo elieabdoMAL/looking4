@@ -1,21 +1,40 @@
-// app/WelcomePage/index.tsx
+// app/welcomePage/index.tsx
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./styles";
 import Colors from "../../src/styles/colors";
 import Footer from "../../src/components/Footer";
 
+// Mock user data for logo click login
+const MOCK_USER = {
+  id: "12345",
+  name: "Jean Tremblay",
+  token: "mock-token-12345",
+};
+
 export default function WelcomePage() {
   const router = useRouter();
 
+  // Function to handle mock login through logo click
+  const handleLogoClick = async () => {
+    // Store mock user data in AsyncStorage
+    await AsyncStorage.setItem("userId", MOCK_USER.id);
+    await AsyncStorage.setItem("token", MOCK_USER.token);
+    await AsyncStorage.setItem("userName", MOCK_USER.name);
+
+    // Navigate directly to profile
+    router.push("/userProfile");
+  };
+
   return (
+    // Modified SafeAreaView to not use top or bottom edges
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "transparent" }}
-      // Exclude the top safe area so the gradient extends to the very top.
-      edges={["bottom", "left", "right"]}
+      edges={["left", "right"]}
     >
       <LinearGradient
         style={styles.container}
@@ -23,12 +42,14 @@ export default function WelcomePage() {
         start={Colors.gradient.start}
         end={Colors.gradient.end}
       >
-        {/* HEADER */}
+        {/* HEADER - Logo now clickable */}
         <View style={styles.headerContainer}>
-          <Image
-            source={require("../../assets/logo.png")}
-            style={styles.logo}
-          />
+          <TouchableOpacity onPress={handleLogoClick}>
+            <Image
+              source={require("../../assets/logo.png")}
+              style={styles.logo}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* GRID SECTION */}

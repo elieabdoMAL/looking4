@@ -1,4 +1,4 @@
-// app/WelcomePage/styles.ts
+// app/welcomePage/styles.ts
 import { StyleSheet } from "react-native";
 import Colors from "../../src/styles/colors";
 
@@ -6,7 +6,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 30,
-    paddingTop: 0,
+    paddingTop: 50,
     marginTop: 0,
     height: "100%",
   },
@@ -122,5 +122,22 @@ export default StyleSheet.create({
     color: Colors.white,
     fontSize: 22,
     textTransform: "uppercase",
+  },
+  // New styles for mock login button
+  mockLoginButton: {
+    backgroundColor: Colors.orangeDark,
+    paddingVertical: 12,
+    borderRadius: 50,
+    width: "100%",
+    alignItems: "center",
+    marginTop: 5,
+    marginBottom: 10,
+    borderWidth: 2,
+    borderColor: Colors.white,
+  },
+  mockLoginButtonText: {
+    color: Colors.white,
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
