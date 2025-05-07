@@ -27,7 +27,7 @@ export default function WelcomePage() {
     await AsyncStorage.setItem("userName", MOCK_USER.name);
 
     // Navigate directly to profile
-    router.push("/userProfile");
+    router.push("./userMap");
   };
 
   return (

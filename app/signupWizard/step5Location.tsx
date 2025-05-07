@@ -87,7 +87,7 @@ const Step5Location: React.FC = () => {
         {
           text: "OK",
           onPress: () => {
-            router.push("/userProfile");
+            router.push("./userMap");
           },
         },
       ]);
